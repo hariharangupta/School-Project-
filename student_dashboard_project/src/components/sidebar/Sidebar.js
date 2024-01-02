@@ -27,7 +27,7 @@ const Sidebar = () => {
       <Box className="sidebar__container">
         <Box class="sidebar__logo">
           <Avatar
-            src={access.defaultProfile}
+            src={access?.defaultProfile || User}
             sx={{ width: 100, height: 100, margin: "1rem" }}
           />
           <Typography variant="h6">STUDENT</Typography>

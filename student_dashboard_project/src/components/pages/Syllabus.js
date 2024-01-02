@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import {
   Alert,
   Box,
@@ -7,6 +8,7 @@ import {
   Grid,
   Paper,
   Snackbar,
+  Typography,
 } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
 import { useFormik } from "formik";
@@ -45,27 +47,31 @@ const Syllabus = () => {
     if (!access.token) {
       navigate("/login");
     }
+    const storedRecords = JSON.parse(localStorage.getItem("syllabusRecords"));
+    if (storedRecords) {
+      setRecords(storedRecords);
+    }
   }, []);
 
   const classOptions = [
-    { value: "1st", label: "1st" },
-    { value: "2nd", label: "2nd" },
-    { value: "3rd", label: "3rd" },
-    { value: "4th", label: "4th" },
-    { value: "5th", label: "5th" },
-    { value: "6th", label: "6th" },
-    { value: "7th", label: "7th" },
-    { value: "8th", label: "8th" },
-    { value: "9th", label: "9th" },
-    { value: "10th", label: "10th" },
+    { value: "1", label: "1 CLASS" },
+    { value: "2", label: "2 CLASS" },
+    { value: "3", label: "3 CLASS" },
+    { value: "4", label: "4 CLASS" },
+    { value: "5", label: "5 CLASS" },
+    { value: "6", label: "6 CLASS" },
+    { value: "7", label: "7 CLASS" },
+    { value: "8", label: "8 CLASS" },
+    { value: "9", label: "9 CLASS" },
+    { value: "10", label: "10 CLASS" },
   ];
 
   const subjectOptions = [
-    { value: "English", label: "English" },
-    { value: "Hindi", label: "Hindi" },
-    { value: "Maths", label: "Maths" },
-    { value: "Science", label: "Science" },
-    { value: "Social", label: "Social" },
+    { value: "ENGLISH", label: "ENGLISH" },
+    { value: "HINDI", label: "HINDI" },
+    { value: "MATHS", label: "MATHS" },
+    { value: "SCIENCE", label: "Science" },
+    { value: "SOCIAL", label: "Social" },
   ];
   console.log(selectedYear);
   const formik = useFormik({
@@ -77,6 +83,7 @@ const Syllabus = () => {
     onSubmit: (values) => {
       const newRecord = {
         ...values,
+        id: uuidv4(),
         year: selectedYear || "",
       };
 
@@ -108,6 +115,9 @@ const Syllabus = () => {
               <SubHeader name="Syllabus" />
               <Divider />
               <Box className="syllabus__page_container">
+                <Box className="syllabus__page_container_header">
+                  <Typography variant="h6">ADD STUDENT</Typography>
+                </Box>
                 <form
                   onSubmit={formik.handleSubmit}
                   style={{
@@ -152,11 +162,7 @@ const Syllabus = () => {
                         onChange={handleYearChange}
                         dateFormat="yyyy"
                         showYearPicker
-                        styles={{
-                          width: "150px",
-                          padding: "8px",
-                          fontSize: "16px",
-                        }}
+                        wrapperClassName="datePicker"
                       />
                     </Box>
 

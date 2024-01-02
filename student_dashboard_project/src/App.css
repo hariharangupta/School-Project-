@@ -98,3 +98,12 @@ body {
   color: red;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+/* syllabus page */
+
+.syllabus__page_container_header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
