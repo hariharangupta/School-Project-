@@ -19,15 +19,15 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
   const access = JSON.parse(localStorage.getItem("data"));
-  const syllabusRecords =
-    JSON.parse(localStorage.getItem("syllabusRecords")) || [];
+
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
     if (!access.token) {
       navigate("/login");
     }
-
+    const syllabusRecords =
+      JSON.parse(localStorage.getItem("syllabusRecords")) || [];
     if (syllabusRecords) {
       setRecords(syllabusRecords);
     }
