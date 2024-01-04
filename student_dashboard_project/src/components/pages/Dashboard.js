@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
+  Chip,
   Divider,
   Grid,
   Paper,
@@ -38,38 +39,91 @@ const Dashboard = () => {
       name: "BOARD",
       selector: (row) => row.boardValue?.value,
       sortable: true,
-      text: "center",
-      grow: 2,
+      style: {
+        textAlign: "center",
+      },
     },
     {
       name: "CLASS",
       selector: (row) => row.classValue?.value,
       sortable: true,
-      grow: 2,
+      style: {
+        textAlign: "center",
+      },
     },
     {
       name: "SUBJECT",
       selector: (row) => row.subjectValue?.value,
       sortable: true,
-      grow: 2,
     },
     {
       name: "ACADEMIC YEAR",
       selector: (row) => String(row.year).substring(0, 10),
       sortable: true,
-      grow: 2,
     },
     {
       name: "DESCRIPTION",
       selector: (row) => row.description,
       sortable: true,
-      grow: 2,
     },
-
+    {
+      name: "Topics",
+      cell: (row) => (
+        <Box className="listItems">
+          {row.topicsData?.map((item, i) => (
+            <>
+              <Box key={i} className="items">
+                {item.topic && (
+                  <p
+                    style={{
+                      margin: "5px",
+                      background: "#232d3f",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      color: "white",
+                    }}
+                  >
+                    {item?.topic}
+                  </p>
+                )}
+                {item.subTopic && (
+                  <p
+                    style={{
+                      margin: "5px",
+                      background: "#232d3f",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      color: "white",
+                    }}
+                  >
+                    {item?.subTopic}
+                  </p>
+                )}
+                {item.chapter && (
+                  <p
+                    style={{
+                      margin: "5px",
+                      background: "#232d3f",
+                      padding: "5px",
+                      borderRadius: "5px",
+                      color: "white",
+                    }}
+                  >
+                    {item?.chapter?.label}
+                  </p>
+                )}
+              </Box>
+            </>
+          ))}
+        </Box>
+      ),
+      sortable: false,
+      grow: 3,
+    },
     {
       name: "ACTION",
       cell: (value) => (
-        <Box onClick={(e) => deleteRecord(value)}>
+        <Box onClick={(e) => deleteRecord(value)} style={{ cursor: "pointer" }}>
           <DeleteIcon />
         </Box>
       ),
@@ -86,115 +140,38 @@ const Dashboard = () => {
     localStorage.setItem("syllabusRecords", JSON.stringify(filteredData));
   };
 
-  // const data = [
-  //   {
-  //     board: "CBSE",
-  //     class: "10th",
-  //     subject: "Maths",
-  //     academicYear: "2020",
-  //     description: "About Maths",
-  //     subTopic: "Maths is my fav subject",
-  //   },
-  //   {
-  //     board: "SCC",
-  //     class: "10th",
-  //     subject: "Maths",
-  //     academicYear: "2020",
-  //     description: "About Maths",
-  //     subTopic: "Maths is my fav subject",
-  //   },
-  //   {
-  //     board: "CBSE",
-  //     class: "10th",
-  //     subject: "Maths",
-  //     academicYear: "2020",
-  //     description: "About Maths",
-  //     subTopic: "Maths is my fav subject",
-  //   },
-  //   {
-  //     board: "CBSE",
-  //     class: "10th",
-  //     subject: "Maths",
-  //     academicYear: "2020",
-  //     description: "About Maths",
-  //     subTopic: "Maths is my fav subject",
-  //   },
-  //   {
-  //     board: "CBSE",
-  //     class: "10th",
-  //     subject: "Maths",
-  //     academicYear: "2020",
-  //     description: "About Maths",
-  //     subTopic: "Maths is my fav subject",
-  //   },
-  // ];
-
-  // const AddComponent = ({ searchValue, setSearchValue }) => {
-  //   const handleSearch = (e) => {
-  //     setSearchValue(e.target.value);
-  //   };
-  //   return (
-  //     <div
-  //       style={{
-  //         display: "flex",
-  //         justifyContent: "flex-end",
-  //         alignItems: "center",
-  //       }}
-  //     >
-  //       <Box>
-  //         <TextField
-  //           fullWidth
-  //           name="searchValue"
-  //           type="text"
-  //           margin="normal"
-  //           value={searchValue}
-  //           placeholder="Search"
-  //           onChange={(e) => setSearchValue(e.target.value)}
-  //         />
-  //       </Box>
-  //       <Box style={{ margin: "1rem" }}>
-  //         <Button
-  //           variant="contained"
-  //           color="inherit"
-  //           onClick={() => navigate("/syllabus")}
-  //           style={{
-  //             background: "aliceblue",
-  //             color: "black",
-  //             fontWeight: "bold",
-  //             height: "55px",
-  //           }}
-  //         >
-  //           Add Syllabus
-  //         </Button>
-  //       </Box>
-  //     </div>
-  //   );
-  // };
-
   const customStyles = {
     rows: {
       style: {
         minHeight: "50px",
+        maxWidth: "100%",
       },
     },
     headCells: {
       style: {
-        backgroundColor: "#cbcccf",
-        fontWeight: "bold",
+        backgroundColor: "#232d3f",
+        color: "white",
         fontSize: "14px",
+        textAlign: "center",
       },
     },
     cells: {
       style: {
         fontWeight: "500",
+        textAlign: "center",
+      },
+      cell: {
+        textAlign: "center",
       },
     },
     pagination: {
       style: {
-        backgroundColor: "#cbcccf",
+        backgroundColor: "#232d3f",
+        color: "white",
       },
       pageButtonsStyle: {
         borderColor: "#d6d6d6",
+        color: "white",
       },
     },
     noData: {
@@ -221,6 +198,7 @@ const Dashboard = () => {
           ?.toLowerCase()
           .includes(String(searchValue).toLowerCase())
     );
+
   const btnHandler = () => {
     navigate("/syllabus");
   };
@@ -249,24 +227,16 @@ const Dashboard = () => {
               subHeader={true}
               striped={true}
               subHeaderComponent={
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Box style={{ margin: "0 1rem" }}>
-                    <TextField
-                      fullWidth
-                      name="searchValue"
-                      type="text"
-                      margin="normal"
-                      value={searchValue}
-                      placeholder="Search"
-                      onChange={(e) => setSearchValue(e.target.value)}
-                    />
-                  </Box>
+                <Box style={{ margin: "0 1rem" }}>
+                  <TextField
+                    fullWidth
+                    name="searchValue"
+                    type="text"
+                    margin="normal"
+                    value={searchValue}
+                    placeholder="Search"
+                    onChange={(e) => setSearchValue(e.target.value)}
+                  />
                 </Box>
               }
             />

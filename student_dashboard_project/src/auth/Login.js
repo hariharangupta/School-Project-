@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import defaultProfile from "../images/default.jpg";
 import { useFormik } from "formik";
-
+import LockOpenIcon from "@mui/icons-material/LockOpen";
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -71,9 +71,7 @@ const Login = () => {
     setToaster(false);
   };
   useEffect(() => {
-    // Check if localStorage is empty or token is missing
     if (!access || !access.token) {
-      // Redirect to the login page
       navigate("/login");
     }
   }, [access, navigate]);
@@ -96,13 +94,16 @@ const Login = () => {
 
         <Grid item xs={12} sm={12} md={5} component={Paper} elevation={3}>
           <Box className="login__page_form">
-            <Typography
-              component="h1"
-              variant="h5"
-              sx={{ textAlign: "center", fontWeight: "bold" }}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
-              LOGIN
-            </Typography>
+              <LockOpenIcon />
+            </Box>
+            <h5 className="login__page_text">LOGIN</h5>
             <form
               onSubmit={formik.handleSubmit}
               style={{
@@ -158,6 +159,7 @@ const Login = () => {
                     fontWeight: "bold",
                     color: "white",
                     background: "black",
+                    width: "100%",
                   }}
                 >
                   {loading ? <CircularProgress /> : "Login"}

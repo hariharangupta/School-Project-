@@ -16,6 +16,7 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../sidebar/Sidebar";
 import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
 
 const Account = () => {
   const navigate = useNavigate();
@@ -62,7 +63,7 @@ const Account = () => {
     },
   });
   const fieldStyles = {
-    margin: "1rem 0.5rem",
+    margin: "1rem 0",
   };
   useEffect(() => {
     if (!access?.token) {
@@ -106,6 +107,8 @@ const Account = () => {
           <Sidebar />
         </Grid>
         <Grid item xs={10} sm={10} md={10}>
+          <Header />
+
           <SubHeader name="ACCOUNT" showButton={false} />
           <Divider sx={{ background: "white" }} />
           <Box className="account__page_container">
@@ -115,7 +118,7 @@ const Account = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 flexDirection: "column",
-                paddingTop: "0.5rem",
+                paddingTop: "0.5rem 0",
               }}
             >
               <label htmlFor="imageInput">
@@ -139,7 +142,6 @@ const Account = () => {
                   background: "#232d3f",
                 }}
                 type="button"
-                size="small"
                 onClick={handleButtonClick}
               >
                 Change Profile Picture
@@ -161,7 +163,7 @@ const Account = () => {
                 paddingTop: "1rem",
               }}
             >
-              <Grid item xs={12} sm={12} md={8}>
+              <Grid item xs={10} sm={10} md={10}>
                 <TextField
                   fullWidth
                   label="Name"
@@ -204,10 +206,9 @@ const Account = () => {
                   variant="contained"
                   style={{
                     background: "#232d3f",
-                    margin: "0 0.5rem",
+                    margin: "0.5rem 0",
                   }}
                   type="submit"
-                  size="small"
                 >
                   {!access?.formData ? "Create Profile" : "Edit Profile"}
                 </Button>

@@ -9,8 +9,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { Avatar, Divider, Grid, Paper, Typography } from "@mui/material";
 import User from "../../images/user.jpg";
 import Footer from "../Footer/Footer";
-// import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
-// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -43,17 +41,7 @@ const Sidebar = () => {
               src={access?.defaultProfile || User}
             />
           </Box>
-          <Typography
-            className="sidebar__container_headerText"
-            // style={{
-            //   display: sidebarOpen ? "block" : "none",
-            //   textAlign: "center",
-            //   margin: "1rem 0",
-            //   color: "white",
-            // }}
-          >
-            STUDENT
-          </Typography>
+          <p className="sidebar__container_headerText">STUDENT NAME</p>
         </Box>
         <Divider sx={{ background: "white" }} />
 
@@ -89,15 +77,7 @@ const Sidebar = () => {
                   >
                     {item.icon}
                   </ListItemIcon>
-                  <p
-                    className="sidebar__container_listItem_text"
-                    // sx={{
-                    //   display: sidebarOpen ? "block" : "none",
-                    //   fontFamily: "Poppins",
-                    //   fontWeight: "bold",
-                    //   color: "white",
-                    // }}
-                  >
+                  <p className="sidebar__container_listItem_text">
                     {item.name}
                   </p>
                 </Box>

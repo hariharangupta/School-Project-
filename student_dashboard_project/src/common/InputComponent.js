@@ -3,6 +3,7 @@ import { useFormik } from "formik";
 import React, { useState } from "react";
 import Select from "react-select";
 import { v4 as uuidv4 } from "uuid";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const InputComponent = ({
   addTopic,
@@ -25,13 +26,27 @@ const InputComponent = ({
       subTopic: "",
       chapter: "",
     },
-
+    // validationSchema: Yup.object({
+    //   description: Yup.string().required("Description is required"),
+    // }),
     onSubmit: (values) => {
-      console.log(values, uuidv4());
+      console.log(addTopic);
     },
   });
+  const handleTopicChange = (index, value) => {
+    console.log(index, value);
+    handleInputChange(index, { ...addTopic[index], topic: value });
+  };
+
+  const handleSubTopicChange = (index, value) => {
+    handleInputChange(index, { ...addTopic[index], subTopic: value });
+  };
+
+  const handleChapterChange = (index, value) => {
+    handleInputChange(index, { ...addTopic[index], chapter: value });
+  };
+
   const renderInputs = () => {
-    console.log(formik);
     return addTopic.map((input, index) => (
       <form onBlur={formik.handleSubmit}>
         <Grid
@@ -42,44 +57,43 @@ const InputComponent = ({
         >
           <Grid item xs={10} sm={10} md={3}>
             <TextField
+              name="topic"
               type="text"
-              value={formik.values.topic}
-              // onBlur={formik.values.topic}
-              onChange={formik.handleChange}
-              placeholder="Topic"
-              margin="normal"
+              value={input.topic}
+              onChange={(e) => handleTopicChange(index, e.target.value)}
               style={{
                 background: "white",
                 borderRadius: "5px",
                 width: "100%",
                 color: "white",
               }}
+              placeholder="Topic"
+              margin="normal"
             />
           </Grid>
           <Grid item xs={10} sm={10} md={3}>
             <TextField
+              name="subTopic"
               type="text"
-              value={formik.values.subTopic}
-              // onBlur={formik.values.subTopic}
-              onChange={formik.handleChange}
-              placeholder="subTopic"
-              margin="normal"
+              value={input.subTopic}
+              onChange={(e) => handleSubTopicChange(index, e.target.value)}
               style={{
                 background: "white",
                 borderRadius: "5px",
                 width: "100%",
                 color: "white",
               }}
+              placeholder="subTopic"
+              margin="normal"
             />
           </Grid>
           <Grid item xs={10} sm={10} md={3}>
             <Select
               name="boardValue"
               options={chapterOptions}
-              onChange={(e) => formik.setFieldValue("chapter", e)}
+              onChange={(e) => handleChapterChange(index, e)}
               placeholder="Select Board"
-              value={formik.values.chapter}
-              // onBlur={formik.values.chapter}
+              value={input.chapter}
             />
           </Grid>
           <Grid item xs={10} sm={10} md={3}>
@@ -93,7 +107,7 @@ const InputComponent = ({
               type="button"
               onClick={() => handleRemoveInput(index)}
             >
-              Remove
+              <DeleteIcon />
             </Button>
           </Grid>
         </Grid>
@@ -113,7 +127,7 @@ const InputComponent = ({
         type="button"
         onClick={handleAddInput}
       >
-        Add Input
+        Add Topic
       </Button>
     </div>
   );

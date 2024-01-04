@@ -7,10 +7,10 @@ const SubHeader = ({ name, btnText, btnHandler, showButton }) => {
       <p className="subheader__page_text">{name}</p>
       {showButton === true && (
         <Button
-          size="small"
           variant="contained"
           style={{
             background: "#232d3f",
+            margin: "0 1rem",
           }}
           onClick={btnHandler}
         >

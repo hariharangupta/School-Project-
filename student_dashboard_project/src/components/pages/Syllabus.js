@@ -34,7 +34,7 @@ const Syllabus = () => {
   const [toaster, setToaster] = useState(false);
   const [toastMessage, settoastMessage] = useState("");
   const [addTopic, setAddTopic] = useState([""]);
-
+  console.log(addTopic, "from ss");
   const boardOptions = [
     { value: "CBSE", label: "CBSE" },
     { value: "SCC", label: "SCC" },
@@ -50,10 +50,6 @@ const Syllabus = () => {
     setToaster(false);
   };
 
-  const handleChange = (e) => {
-    setIsOpen(!isOpen);
-    setStartDate(e);
-  };
   const handleClick = (e) => {
     e.preventDefault();
     setIsOpen(!isOpen);
@@ -106,8 +102,9 @@ const Syllabus = () => {
         ...values,
         id: uuidv4(),
         year: selectedYear || "",
+        topicsData: addTopic,
       };
-
+      console.log(newRecord, "rsd");
       const updatedRecords = [...records, newRecord];
       setRecords(updatedRecords);
       navigate("/dashboard");
@@ -133,7 +130,7 @@ const Syllabus = () => {
     setAddTopic(newInputs);
   };
 
-  const handleAddInput = ({ handleAddInput }) => {
+  const handleAddInput = () => {
     setAddTopic([...addTopic, ""]);
   };
   return (
@@ -155,7 +152,7 @@ const Syllabus = () => {
                 paddingTop: "1rem",
               }}
             >
-              <Grid item xs={12} sm={12} md={8}>
+              <Grid item xs={10} sm={10} md={10}>
                 <Box style={fieldStyles}>
                   <Select
                     name="boardValue"
@@ -243,15 +240,17 @@ const Syllabus = () => {
                   >
                     Select Academic Year
                   </p>
-                  <TextField
-                    value={
-                      selectedYear !== ""
-                        ? new Date(selectedYear.toString()).getFullYear()
-                        : "Please Select Year"
-                    }
-                    InputProps={{ readOnly: true }}
-                  />
-
+                  {selectedYear && (
+                    <TextField
+                      value={
+                        selectedYear !== ""
+                          ? new Date(selectedYear.toString()).getFullYear()
+                          : "Year"
+                      }
+                      InputProps={{ readOnly: true }}
+                      style={{ marginRight: "0.5rem" }}
+                    />
+                  )}
                   {isOpen && (
                     <DatePicker
                       selected={selectedYear}
