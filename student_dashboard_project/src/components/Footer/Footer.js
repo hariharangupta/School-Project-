@@ -3,12 +3,12 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <Paper elevation={2} style={{ marginLeft: "0.5rem" }}>
+    <Paper elevation={2}>
       <Box className="footer__page">
-        <Typography variant="h5">
+        <p className="footer__page_text">
           {" "}
-          &copy; Student Project. All Rights Reserved.
-        </Typography>
+          copyright &copy; 2023 All Rights Reserved.
+        </p>
       </Box>
     </Paper>
   );

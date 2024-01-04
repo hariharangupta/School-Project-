@@ -5,36 +5,43 @@ import {
   Box,
   Button,
   Divider,
+  FormLabel,
   Grid,
   Paper,
   Snackbar,
+  TextField,
   Typography,
 } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
 import { useFormik } from "formik";
 import Select from "react-select";
-import Sidebar from "../sidebar/Sidebar";
-import Header from "../Header/Header";
 import { useNavigate } from "react-router-dom";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import * as Yup from "yup";
+import InputComponent from "../../common/InputComponent";
+import Sidebar from "../sidebar/Sidebar";
+import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 
 const Syllabus = () => {
   const navigate = useNavigate();
-  const access = JSON.parse(localStorage.getItem("data"));
-
-  const [selectedYear, setSelectedYear] = useState(null);
+  const access = JSON.parse(localStorage.getItem("data")) || "";
+  const [isOpen, setIsOpen] = useState(false);
+  const [startDate, setStartDate] = useState(new Date());
+  const [selectedYear, setSelectedYear] = useState("");
   const [records, setRecords] = useState([]);
   const [toaster, setToaster] = useState(false);
-  const [loginMessage, setLoginMessage] = useState("");
+  const [toastMessage, settoastMessage] = useState("");
+  const [addTopic, setAddTopic] = useState([""]);
+
   const boardOptions = [
     { value: "CBSE", label: "CBSE" },
     { value: "SCC", label: "SCC" },
   ];
   const handleYearChange = (date) => {
-    const selectedYear = date.getFullYear();
-    setSelectedYear(new Date(selectedYear, 1, 1));
+    setIsOpen(!isOpen);
+    setSelectedYear(date);
   };
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -43,8 +50,17 @@ const Syllabus = () => {
     setToaster(false);
   };
 
+  const handleChange = (e) => {
+    setIsOpen(!isOpen);
+    setStartDate(e);
+  };
+  const handleClick = (e) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
+
   useEffect(() => {
-    if (!access.token) {
+    if (!access?.token) {
       navigate("/login");
     }
     const storedRecords = JSON.parse(localStorage.getItem("syllabusRecords"));
@@ -74,12 +90,17 @@ const Syllabus = () => {
     { value: "SOCIAL", label: "Social" },
   ];
   console.log(selectedYear);
+
   const formik = useFormik({
     initialValues: {
       boardValue: "",
       classValue: "",
       subjectValue: "",
+      description: "",
     },
+    validationSchema: Yup.object({
+      description: Yup.string().required("Description is required"),
+    }),
     onSubmit: (values) => {
       const newRecord = {
         ...values,
@@ -88,117 +109,192 @@ const Syllabus = () => {
       };
 
       const updatedRecords = [...records, newRecord];
-
       setRecords(updatedRecords);
-
+      navigate("/dashboard");
       localStorage.setItem("syllabusRecords", JSON.stringify(updatedRecords));
+      console.log(updatedRecords);
       setToaster(true);
-      setLoginMessage("Record Added Successfully..");
+      settoastMessage("Record Added Successfully..");
       formik.resetForm();
-      setSelectedYear(null);
+      setSelectedYear("");
     },
   });
   const fieldStyles = {
     margin: "1rem 0.5rem",
   };
+  const handleRemoveInput = (index) => {
+    const newInputs = [...addTopic];
+    newInputs.splice(index, 1);
+    setAddTopic(newInputs);
+  };
+  const handleInputChange = (index, value) => {
+    const newInputs = [...addTopic];
+    newInputs[index] = value;
+    setAddTopic(newInputs);
+  };
 
+  const handleAddInput = ({ handleAddInput }) => {
+    setAddTopic([...addTopic, ""]);
+  };
   return (
     <>
       <Grid container>
-        <Grid md={2} sx={2} className="side__page">
+        <Grid item xs={2} sm={2} md={2}>
           <Sidebar />
         </Grid>
-        <Grid md={10} sx={10}>
-          <>
-            <Header />
-            <Paper elevation={2} className="syllabus__page">
-              <SubHeader name="Syllabus" />
-              <Divider />
-              <Box className="syllabus__page_container">
-                <Box className="syllabus__page_container_header">
-                  <Typography variant="h6">ADD STUDENT</Typography>
+        <Grid item xs={10} sm={10} md={10}>
+          <Header />
+          <SubHeader name="ADD SYLLABUS" showButton={false} />
+          <Divider sx={{ background: "white" }} />
+          <Box className="syllabus__page_container">
+            <form
+              onSubmit={formik.handleSubmit}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingTop: "1rem",
+              }}
+            >
+              <Grid item xs={12} sm={12} md={8}>
+                <Box style={fieldStyles}>
+                  <Select
+                    name="boardValue"
+                    options={boardOptions}
+                    onChange={(e) => formik.setFieldValue("boardValue", e)}
+                    value={formik.values.boardValue}
+                    placeholder="Select Board"
+                  />
+                  {!formik.values.boardValue && (
+                    <div className="danger">{"Please Select Board"}</div>
+                  )}
                 </Box>
-                <form
-                  onSubmit={formik.handleSubmit}
+                <Box style={fieldStyles}>
+                  <Select
+                    name="classValue"
+                    options={classOptions}
+                    onChange={(e) => formik.setFieldValue("classValue", e)}
+                    value={formik.values.classValue}
+                    placeholder="Select Class"
+                  />
+                  {!formik.values.classValue && (
+                    <div className="danger">{"Please Select Class"}</div>
+                  )}
+                </Box>
+                <Box style={fieldStyles}>
+                  <Select
+                    name="subjectValue"
+                    options={subjectOptions}
+                    onChange={(e) => formik.setFieldValue("subjectValue", e)}
+                    value={formik.values.subjectValue}
+                    placeholder="Select Subject"
+                  />
+                  {!formik.values.subjectValue && (
+                    <div className="danger">{"Please Select Subject"}</div>
+                  )}
+                </Box>
+                <Box style={fieldStyles}>
+                  <InputComponent
+                    addTopic={addTopic}
+                    setAddTopic={setAddTopic}
+                    handleRemoveInput={handleRemoveInput}
+                    handleInputChange={handleInputChange}
+                    handleAddInput={handleAddInput}
+                  />
+                </Box>
+                <Box style={fieldStyles}>
+                  <TextField
+                    fullWidth
+                    rows={2}
+                    multiline
+                    name="description"
+                    type="text"
+                    value={formik.values.description}
+                    onChange={formik.handleChange}
+                    style={{
+                      background: "white",
+                      borderRadius: "5px",
+                      width: "100%",
+                      color: "white",
+                    }}
+                    placeholder="Syllabus Description"
+                  />
+                  {formik.errors.description && formik.touched.description && (
+                    <div className="danger">{formik.errors.description}</div>
+                  )}
+                </Box>
+                <Box
+                  // style={{
+                  //   margin: "1rem 0.5rem",
+                  //   display: "flex",
+                  //   justifyContent: "start",
+                  //   alignItems: "center",
+                  // }}
+                  className="syllabus__page_datepicker"
+                >
+                  <p
+                    variant="contained"
+                    onClick={handleClick}
+                    // style={{
+                    //   marginRight: "1rem",
+                    //   background: "#232d3f",
+                    //   color: "white",
+                    // }}
+                    className="syllabus__page_datepicker_chip"
+                  >
+                    Select Academic Year
+                  </p>
+                  <TextField
+                    value={
+                      selectedYear !== ""
+                        ? new Date(selectedYear.toString()).getFullYear()
+                        : "Please Select Year"
+                    }
+                    InputProps={{ readOnly: true }}
+                  />
+
+                  {isOpen && (
+                    <DatePicker
+                      selected={selectedYear}
+                      onChange={handleYearChange}
+                      showYearPicker
+                      dateFormat="yyyy"
+                      placeholderText="Please select a year"
+                      inline
+                    />
+                  )}
+                </Box>
+                {selectedYear === "" && (
+                  <div className="danger" style={fieldStyles}>
+                    {"Please Select a Year"}
+                  </div>
+                )}
+                <Button
+                  variant="contained"
+                  type="submit"
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    paddingTop: "1rem",
+                    background: "#232d3f",
+                    margin: "0 0.5rem",
                   }}
                 >
-                  <Grid item xs={12} sm={12} md={8}>
-                    <Box style={fieldStyles}>
-                      <Select
-                        name="boardValue"
-                        options={boardOptions}
-                        onChange={(e) => formik.setFieldValue("boardValue", e)}
-                        value={formik.values.boardValue}
-                        placeholder="Select Board"
-                      />
-                    </Box>
-                    <Box style={fieldStyles}>
-                      <Select
-                        name="classValue"
-                        options={classOptions}
-                        onChange={(e) => formik.setFieldValue("classValue", e)}
-                        value={formik.values.classValue}
-                        placeholder="Select Class"
-                      />
-                    </Box>
-                    <Box style={fieldStyles}>
-                      <Select
-                        name="subjectValue"
-                        options={subjectOptions}
-                        onChange={(e) =>
-                          formik.setFieldValue("subjectValue", e)
-                        }
-                        value={formik.values.subjectValue}
-                        placeholder="Select Subject"
-                      />
-                    </Box>
-                    <Box style={fieldStyles}>
-                      <DatePicker
-                        selected={selectedYear}
-                        onChange={handleYearChange}
-                        dateFormat="yyyy"
-                        showYearPicker
-                        wrapperClassName="datePicker"
-                      />
-                    </Box>
-
-                    <Button
-                      variant="contained"
-                      type="submit"
-                      style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        marginTop: "1rem",
-                        background: "aliceblue",
-                        color: "black",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      Submit
-                    </Button>
-                  </Grid>
-                </form>
-              </Box>
-            </Paper>
-            <Footer />
-          </>
+                  Submit
+                </Button>
+              </Grid>
+            </form>
+          </Box>
+          <Footer />
         </Grid>
       </Grid>
+
       <Box>
         <Snackbar
           open={toaster}
           autoHideDuration={6000}
           onClose={handleClose}
-          message={loginMessage}
+          message={toastMessage}
           anchorOrigin={{ vertical: "top", horizontal: "right" }}
         >
           <Alert severity="success" onClose={handleClose}>
-            {loginMessage}
+            {toastMessage}
           </Alert>
         </Snackbar>
       </Box>

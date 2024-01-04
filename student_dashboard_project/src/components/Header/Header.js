@@ -3,11 +3,9 @@ import React from "react";
 
 const Header = () => {
   return (
-    <Paper elevation={2} style={{ marginLeft: "0.5rem" }}>
-      <Box className="header__page">
-        <Typography variant="h5">STUDENT NAME</Typography>
-      </Box>
-    </Paper>
+    <Box className="header__page">
+      <p className="header__page_text">STUDENT NAME</p>
+    </Box>
   );
 };
 

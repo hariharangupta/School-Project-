@@ -10,20 +10,20 @@ import {
 } from "@mui/material";
 import SubHeader from "../../common/SubHeader";
 import DataTable from "react-data-table-component";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../sidebar/Sidebar";
-import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
+import Header from "../Header/Header";
+import Sidebar from "../sidebar/Sidebar";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [searchValue, setSearchValue] = useState("");
-  const access = JSON.parse(localStorage.getItem("data"));
-
+  const access = JSON.parse(localStorage.getItem("data")) || "";
   const [records, setRecords] = useState([]);
 
   useEffect(() => {
-    if (!access.token) {
+    if (!access?.token) {
       navigate("/login");
     }
     const syllabusRecords =
@@ -55,7 +55,7 @@ const Dashboard = () => {
     },
     {
       name: "ACADEMIC YEAR",
-      selector: (row) => row.year,
+      selector: (row) => String(row.year).substring(0, 10),
       sortable: true,
       grow: 2,
     },
@@ -69,18 +69,9 @@ const Dashboard = () => {
     {
       name: "ACTION",
       cell: (value) => (
-        <Button
-          variant="contained"
-          size="small"
-          onClick={(e) => deleteRecord(value)}
-          style={{
-            background: "aliceblue",
-            color: "black",
-            fontWeight: "bold",
-          }}
-        >
-          Delete
-        </Button>
+        <Box onClick={(e) => deleteRecord(value)}>
+          <DeleteIcon />
+        </Box>
       ),
       ignoreRowClick: true,
       allowOverflow: true,
@@ -92,7 +83,7 @@ const Dashboard = () => {
     console.log(value);
     const filteredData = records.filter((item) => item.id !== value.id);
     setRecords(filteredData);
-    localStorage.setItem("syllabusRecords", JSON.stringify(records));
+    localStorage.setItem("syllabusRecords", JSON.stringify(filteredData));
   };
 
   // const data = [
@@ -138,44 +129,47 @@ const Dashboard = () => {
   //   },
   // ];
 
-  const AddComponent = ({ searchValue, setSearchValue }) => {
-    return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
-      >
-        <Box>
-          <TextField
-            fullWidth
-            name="searchValue"
-            type="text"
-            margin="normal"
-            value={searchValue}
-            placeholder="Search"
-            onChange={(e) => setSearchValue(e.target.value)}
-          />
-        </Box>
-        <Box style={{ margin: "1rem" }}>
-          <Button
-            variant="contained"
-            color="inherit"
-            onClick={() => navigate("/syllabus")}
-            style={{
-              background: "aliceblue",
-              color: "black",
-              fontWeight: "bold",
-              height: "55px",
-            }}
-          >
-            Add Syllabus
-          </Button>
-        </Box>
-      </div>
-    );
-  };
+  // const AddComponent = ({ searchValue, setSearchValue }) => {
+  //   const handleSearch = (e) => {
+  //     setSearchValue(e.target.value);
+  //   };
+  //   return (
+  //     <div
+  //       style={{
+  //         display: "flex",
+  //         justifyContent: "flex-end",
+  //         alignItems: "center",
+  //       }}
+  //     >
+  //       <Box>
+  //         <TextField
+  //           fullWidth
+  //           name="searchValue"
+  //           type="text"
+  //           margin="normal"
+  //           value={searchValue}
+  //           placeholder="Search"
+  //           onChange={(e) => setSearchValue(e.target.value)}
+  //         />
+  //       </Box>
+  //       <Box style={{ margin: "1rem" }}>
+  //         <Button
+  //           variant="contained"
+  //           color="inherit"
+  //           onClick={() => navigate("/syllabus")}
+  //           style={{
+  //             background: "aliceblue",
+  //             color: "black",
+  //             fontWeight: "bold",
+  //             height: "55px",
+  //           }}
+  //         >
+  //           Add Syllabus
+  //         </Button>
+  //       </Box>
+  //     </div>
+  //   );
+  // };
 
   const customStyles = {
     rows: {
@@ -185,7 +179,7 @@ const Dashboard = () => {
     },
     headCells: {
       style: {
-        backgroundColor: "aliceblue",
+        backgroundColor: "#cbcccf",
         fontWeight: "bold",
         fontSize: "14px",
       },
@@ -197,7 +191,7 @@ const Dashboard = () => {
     },
     pagination: {
       style: {
-        backgroundColor: "aliceblue",
+        backgroundColor: "#cbcccf",
       },
       pageButtonsStyle: {
         borderColor: "#d6d6d6",
@@ -210,61 +204,74 @@ const Dashboard = () => {
       },
     },
   };
+  const searchData =
+    records &&
+    records.filter(
+      (value) =>
+        value?.boardValue?.value
+          ?.toLowerCase()
+          .includes(String(searchValue).toLowerCase()) ||
+        value.subjectValue?.value
+          ?.toLowerCase()
+          ?.includes(String(searchValue).toLowerCase()) ||
+        value?.classValue?.value
+          ?.toLowerCase()
+          .includes(String(searchValue).toLowerCase()) ||
+        value?.description
+          ?.toLowerCase()
+          .includes(String(searchValue).toLowerCase())
+    );
+  const btnHandler = () => {
+    navigate("/syllabus");
+  };
   return (
     <>
       <Grid container>
-        <Grid item xs={2} sm={2} md={2} className="side__page">
+        <Grid item xs={2} sm={2} md={2}>
           <Sidebar />
         </Grid>
         <Grid item xs={10} sm={10} md={10}>
-          <>
-            <Header />
-
-            <Paper elevation={2} className="dashboard__page">
-              <SubHeader name="Dashboard" />
-              <Divider />
-              <Box className="dashboard__page_container">
-                <DataTable
-                  columns={columns}
-                  customStyles={customStyles}
-                  data={records}
-                  // data={
-                  //   syllabusRecords?.length > 0
-                  //     ? syllabusRecords.filter(
-                  //         (value) =>
-                  //           value?.boardValue?.value
-                  //             .toLowerCase()
-                  //             .includes(String(searchValue).toLowerCase()) ||
-                  //           value?.description
-                  //             .toLowerCase()
-                  //             .includes(String(searchValue).toLowerCase()) ||
-                  //           value?.classValue?.value
-                  //             .toLowerCase()
-                  //             .includes(
-                  //               String(searchValue).toLowerCase() ||
-                  //                 value.subjectValue?.value
-                  //                   ?.toLowerCase()
-                  //                   ?.includes(
-                  //                     String(searchValue).toLowerCase()
-                  //                   )
-                  //             )
-                  //       )
-                  //     : syllabusRecords
-                  // }
-
-                  pagination
-                  subHeader={true}
-                  subHeaderComponent={
-                    <AddComponent
-                      searchValue={searchValue}
-                      setSearchValue={setSearchValue}
+          <Header />
+          <SubHeader
+            name="DASHBOARD"
+            btnText={"ADD SYLLABUS"}
+            btnHandler={btnHandler}
+            showButton={true}
+          />
+          <Divider sx={{ background: "white" }} />
+          <Box className="dashboard__page_container">
+            <DataTable
+              columns={columns}
+              customStyles={customStyles}
+              data={searchData}
+              pagination
+              fixedHeader={true}
+              subHeader={true}
+              striped={true}
+              subHeaderComponent={
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Box style={{ margin: "0 1rem" }}>
+                    <TextField
+                      fullWidth
+                      name="searchValue"
+                      type="text"
+                      margin="normal"
+                      value={searchValue}
+                      placeholder="Search"
+                      onChange={(e) => setSearchValue(e.target.value)}
                     />
-                  }
-                />
-              </Box>
-            </Paper>
-            <Footer />
-          </>
+                  </Box>
+                </Box>
+              }
+            />
+          </Box>
+          <Footer />
         </Grid>
       </Grid>
     </>

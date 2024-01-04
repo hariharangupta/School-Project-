@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "./FireBase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import Grid from "@mui/material/Grid";
@@ -19,6 +19,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [toaster, setToaster] = useState(false);
   const [loginMessage, setLoginMessage] = useState("");
+
+  const access = JSON.parse(localStorage.getItem("data")) || "";
 
   const formik = useFormik({
     initialValues: {
@@ -68,6 +70,13 @@ const Login = () => {
     }
     setToaster(false);
   };
+  useEffect(() => {
+    // Check if localStorage is empty or token is missing
+    if (!access || !access.token) {
+      // Redirect to the login page
+      navigate("/login");
+    }
+  }, [access, navigate]);
   return (
     <>
       <Grid container className="login__page_container">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { SidebarData } from "./SidebarData";
 import Box from "@mui/material/Box";
 import List from "@mui/material/List";
@@ -6,15 +6,19 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { Link, useNavigate } from "react-router-dom";
-import { Avatar, Divider, Typography } from "@mui/material";
+import { Avatar, Divider, Grid, Paper, Typography } from "@mui/material";
 import User from "../../images/user.jpg";
+import Footer from "../Footer/Footer";
+// import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+// import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const Sidebar = () => {
   const navigate = useNavigate();
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   const handleListItemClick = (item, index) => {
     setSelectedIndex(index);
+    console.log(item);
     if (item.name === "LOGOUT") {
       navigate("/login");
       localStorage.clear();
@@ -25,33 +29,79 @@ const Sidebar = () => {
   return (
     <>
       <Box className="sidebar__container">
-        <Box class="sidebar__logo">
-          <Avatar
-            src={access?.defaultProfile || User}
-            sx={{ width: 100, height: 100, margin: "1rem" }}
-          />
-          <Typography variant="h6">STUDENT</Typography>
+        <Box class="sidebar__container_top">
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              padding: "1rem",
+            }}
+          >
+            {" "}
+            <img
+              className="sidebar__container_logo"
+              src={access?.defaultProfile || User}
+            />
+          </Box>
+          <Typography
+            className="sidebar__container_headerText"
+            // style={{
+            //   display: sidebarOpen ? "block" : "none",
+            //   textAlign: "center",
+            //   margin: "1rem 0",
+            //   color: "white",
+            // }}
+          >
+            STUDENT
+          </Typography>
         </Box>
-        <Box>
-          <Divider></Divider>
-          <List component="nav" aria-label="main mailbox folders">
+        <Divider sx={{ background: "white" }} />
+
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <List>
             {SidebarData.map((item, index) => (
-              <ListItemButton
-                key={index}
-                selected={selectedIndex === index}
-                onClick={(event) => handleListItemClick(item, index)}
-                component={Link}
-                to={item.path}
-                style={{ height: "100%" }}
-              >
-                <ListItemIcon style={{ color: "black" }}>
-                  {item.icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={item.name}
-                  style={{ fontWeight: "bold" }}
-                />
-              </ListItemButton>
+              <>
+                <Box
+                  className="sidebar__container_listItem"
+                  key={index}
+                  selected={selectedIndex === index}
+                  onClick={() => handleListItemClick(item, index)}
+                  component={Link}
+                  to={item.path}
+                  // style={{
+                  //   background: selectedIndex === index ? "#151d2b" : "",
+                  // }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      color: "white",
+                      padding: "0.5rem",
+                    }}
+                  >
+                    {item.icon}
+                  </ListItemIcon>
+                  <p
+                    className="sidebar__container_listItem_text"
+                    // sx={{
+                    //   display: sidebarOpen ? "block" : "none",
+                    //   fontFamily: "Poppins",
+                    //   fontWeight: "bold",
+                    //   color: "white",
+                    // }}
+                  >
+                    {item.name}
+                  </p>
+                </Box>
+              </>
             ))}
           </List>
         </Box>

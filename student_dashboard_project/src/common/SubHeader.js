@@ -1,10 +1,22 @@
 import { Box, Button, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
-const SubHeader = ({ name, path }) => {
+const SubHeader = ({ name, btnText, btnHandler, showButton }) => {
   return (
     <Box className="subheader__page">
-      <Typography variant="h6">{name}</Typography>
+      <p className="subheader__page_text">{name}</p>
+      {showButton === true && (
+        <Button
+          size="small"
+          variant="contained"
+          style={{
+            background: "#232d3f",
+          }}
+          onClick={btnHandler}
+        >
+          {btnText}
+        </Button>
+      )}
     </Box>
   );
 };

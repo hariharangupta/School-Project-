@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  background-color: white;
+  font-family: "Poppins", sans-serif;
 }
 
 /* login Page  */
@@ -32,78 +32,349 @@ body {
   /* background: linear-gradient(to bottom, #d2d8da, #3b413b); */
 }
 
-/* sidebar page */
-.sidebar__page {
-  height: 100vh;
-  width: 100%;
-  color: black;
-}
-.sidebar__container {
-  padding: 3rem 1.5rem;
-  background-color: aliceblue;
-  height: 100vh;
-}
-.sidebar__logo {
+/* main container */
+
+.container {
   display: flex;
-  flex-direction: column;
-  justify-self: center;
-  align-items: center;
-}
-/* content page */
-
-.content__page {
   height: 100vh;
-  width: 100%;
-  /* background-color: aliceblue; */
-  background-color: rgb(231, 231, 231);
+  width: 100vw;
 }
 
-/* header page */
-.header__page,
-.footer__page {
+/* sidebar page */
+
+.sidebar__container {
+  min-height: 100%;
+  width: 100%;
+  background: #232d3f;
+  color: "white";
+  text-align: center;
+  border-right: 1px solid rgb(216, 216, 216);
+}
+
+.sidebar__container_top {
+  display: "flex";
+  align-items: "center";
+}
+.sidebar__container_logo {
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+.sidebar__container_headerText {
+  text-align: center;
+  padding: 1rem;
+  color: white;
+}
+.sidebar__container_listItem {
+  text-decoration: none;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 1rem;
+}
+.sidebar__container_listItem_text {
+  font-family: "Poppins", sans-serif;
+  color: white;
+  text-align: start;
+}
+
+/* .sidebar__container_listItem:hover {
+  background-color: #151d2b;
+} */
+
+/* main container */
+
+.main__container {
+  height: 100%;
+  width: 100%;
+}
+
+/* header */
+
+.header__page {
   width: 100%;
   height: 10vh;
-  background-color: aliceblue;
-  color: black;
+  color: white;
+  background: #232d3f;
   display: flex;
-  justify-content: center;
-  padding: 0.5rem 1rem;
-  text-align: center;
   align-items: center;
+  justify-content: start;
+  border-bottom: 1px solid rgb(216, 216, 216);
+  padding: 0 1rem;
 }
 
-/* pages */
-.dashboard__page,
-.account__page,
-.syllabus__page {
-  width: auto;
-  min-height: 76vh;
-  background-color: beige;
-  margin: 0.5rem;
+/* subheader */
+
+.subheader__page {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #cbcccf;
+  color: black;
 }
+.subheader__page_text {
+  font-family: "Poppins", sans-serif;
+}
+.side__container__linkItem {
+  padding: 1rem;
+  background-color: aqua;
+}
+/* pages  */
+
 .dashboard__page_container,
 .account__page_container,
 .syllabus__page_container {
-  display: flex;
-  flex-direction: column;
-  padding: 0.5rem 1rem;
+  min-height: 75vh;
+  width: 100%;
+}
+.dashboard__page_container {
+  max-height: 75vh;
+  overflow-y: scroll;
+  background-color: rgb(231, 231, 231);
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
 }
 
-.subheader__page {
-  padding: 0.5rem 1rem;
-}
-
-/* acount page */
 .danger {
   color: red;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
-/* syllabus page */
+.footer__page {
+  width: 100%;
+  height: 6vh;
+  color: white;
+  background: #232d3f;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  font-family: "Poppins", sans-serif;
 
+  border-top: 1px solid rgb(216, 216, 216);
+}
+
+/* account */
+.account__page_container {
+  height: 85vh;
+  min-height: 75vh;
+  overflow-y: scroll;
+  background-color: rgb(231, 231, 231);
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
+}
+.account__page_logo {
+  height: 100px;
+  width: 100px;
+}
+
+/* syllabus */
+
+.syllabus__page_container {
+  max-height: 75vh;
+  overflow-y: scroll;
+  background-color: rgb(231, 231, 231);
+  padding: 0.5rem;
+  border-radius: 5px;
+  width: 100%;
+}
+.syllabus__page_datepicker {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-direction: row;
+  margin: 1rem 0.5rem;
+}
+.syllabus__page_datepicker_chip {
+  margin-right: 1rem;
+  background-color: #232d3f;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+}
 .syllabus__page_container_header {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
+  color: white;
+  padding: 1rem 0;
+  font-family: "Poppins", sans-serif;
+}
+
+/* responseive */
+
+@media only screen and (max-width: 399px) {
+  .sidebar__container_logo {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+  }
+  .sidebar__container_headerText {
+    text-align: center;
+    padding: 0.5rem;
+    color: white;
+    display: none;
+  }
+  .sidebar__container_listItem {
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .sidebar__container_listItem_text {
+    font-family: "Poppins", sans-serif;
+    color: white;
+    text-align: start;
+    display: none;
+  }
+  /* header */
+  .header__page_text,
+  .footer__page_text,
+  .subheader__page_text {
+    font-size: 12px;
+  }
+  .account__page_logo {
+    height: 70px;
+    width: 70px;
+  }
+
+  .syllabus__page_datepicker {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+  }
+  .syllabus__page_datepicker_chip {
+    margin: 1rem 0;
+    background-color: #232d3f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+}
+
+@media only screen and (min-width: 400px) and (max-width: 600px) {
+  .sidebar__container_logo {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+  }
+  .sidebar__container_headerText {
+    display: none;
+  }
+  .sidebar__container_listItem {
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .sidebar__container_listItem_text {
+    display: none;
+  }
+  /* header */
+  .header__page_text,
+  .footer__page_text,
+  .subheader__page_text {
+    font-size: 16px;
+  }
+  .account__page_logo {
+    height: 80px;
+    width: 80px;
+  }
+  .syllabus__page_datepicker {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+  }
+  .syllabus__page_datepicker_chip {
+    margin: 1rem 0;
+    background-color: #232d3f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+}
+
+/* Small Screens (between 400px and 600px) */
+@media only screen and (min-width: 600px) and (max-width: 800px) {
+  .sidebar__container_logo {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+  }
+  .sidebar__container_headerText {
+    display: none;
+  }
+  .sidebar__container_listItem {
+    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .sidebar__container_listItem_text {
+    display: none;
+  }
+  /* header */
+  .header__page_text,
+  .footer__page_text,
+  .subheader__page_text {
+    font-size: 16px;
+  }
+
+  .syllabus__page_datepicker {
+    display: flex;
+    justify-content: start;
+    align-items: start;
+    flex-direction: column;
+  }
+  .syllabus__page_datepicker_chip {
+    margin: 1rem 0;
+    background-color: #232d3f;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+}
+
+/* Mobile (up to 600px) */
+@media only screen and (min-width: 801px) and (max-width: 1024px) {
+  .sidebar__container_logo {
+    height: 80px;
+    width: 80px;
+    border-radius: 50%;
+  }
+  .sidebar__container_headerText {
+    text-align: center;
+    padding: 0.5rem;
+    color: white;
+    font-size: 15px;
+  }
+  .sidebar__container_listItem {
+    text-decoration: none;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding: 1rem 0;
+  }
+  .sidebar__container_listItem_text {
+    font-family: "Poppins", sans-serif;
+    color: white;
+    text-align: start;
+    font-size: 12px;
+  }
+  /* header */
+  .header__page_text,
+  .footer__page_text,
+  .subheader__page_text {
+    font-size: 20px;
+  }
 }
