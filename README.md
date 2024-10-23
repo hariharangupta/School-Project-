@@ -1,7 +1,8 @@
 
 # School-Project-
 ## First login to app 
-## Email: student@gamil.com, password: student
+## Deployed link: https://student-d30dc.web.app/login 
+## Email: student@gmail.com, password: student
 ## Create a record and record added in dashboard
 ## Account page firstly there is no data is available, once created can change and manage the profile data
 
